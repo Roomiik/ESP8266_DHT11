@@ -7,10 +7,12 @@ const app = express();
 app.use(cors());
 
 const PORT = process.env.PORT || 3000;
-app.use(cors({
-  // origin: 'http://127.0.0.1:5500' // або твій фронтенд IP/порт
-  origin: 'https://roomiik.github.io/esp8266-vue-dth11' // або твій фронтенд IP/порт
-}));
+// app.use(cors({
+//   // origin: 'http://127.0.0.1:5500' // або твій фронтенд IP/порт
+//   origin: 'https://roomiik.github.io/esp8266-vue-dth11' // або твій фронтенд IP/порт
+// }));
+
+app.use(cors())
 
 // Дані в пам'яті
 let latestData = { temperature: null, humidity: null, ts: null };
@@ -57,5 +59,6 @@ app.listen(PORT, () => {
   console.log(`🔌 Сервер запущено на http://localhost:${PORT}`);
   console.log(`   Відкрий фронтенд: http://<IP_комп'ютера>:${PORT}/`);
 });
+
 
 
