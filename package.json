@@ -1,6 +1,7 @@
 {
-  "name": "esp8266-api",
+  "name": "esp8266-dht11-api",
   "version": "1.0.0",
+  "description": "ESP8266 DHT11 API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
