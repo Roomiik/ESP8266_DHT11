@@ -123,12 +123,23 @@ class TemperatureMonitor {
         
         const squareDiffs = temps.map(temp => Math.pow(temp - mean, 2));
         const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length;
-        const stdDev = Math.sqrt(avgSquareDiff);
+        let stdDev = Math.sqrt(avgSquareDiff);
 
         const currentTemp = currentData.temperature;
-        const deviations = Math.abs(currentTemp - mean) / stdDev;
+        const absoluteDiff = Math.abs(currentTemp - mean);
 
-        if (deviations > 2) {
+        // Якщо абсолютна різниця менше 1°C – не викид
+        if (absoluteDiff < 1.0) return;
+
+        // Коригуємо стандартне відхилення, якщо воно надто мале
+        const MIN_STD_DEV = 0.5;
+        if (stdDev < MIN_STD_DEV) {
+            stdDev = MIN_STD_DEV;
+        }
+
+        const deviations = absoluteDiff / stdDev;
+        if (deviations > 2.5) { // трохи вище, ніж 2
+            console.log(`📈 СТАТИСТИЧНИЙ ВИКИД: ${currentTemp}°C відхиляється на ${deviations.toFixed(1)}σ від середнього (${mean.toFixed(1)}°C)`);
             this.sendTelegramMessage(`📈 СТАТИСТИЧНИЙ ВИКИД: ${currentTemp}°C відхиляється на ${deviations.toFixed(1)}σ від середнього (${mean.toFixed(1)}°C)`);
         }
     }
