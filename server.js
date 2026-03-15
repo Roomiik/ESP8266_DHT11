@@ -61,7 +61,8 @@ app.post('/api', (req, res) => {
 
 // API: останні дані
 app.get('/api/latest', (req, res) => {
-  res.json(monitor.temperatureData.at(0));
+    let temps = monitor.temperatureData.length > 0 ? monitor.temperatureData[monitor.temperatureData.length - 1] : undefined;
+    res.json(temps);
 });
 
 // API: історія
